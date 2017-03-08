@@ -81,6 +81,13 @@ run' (Just p) = do
 run :: String -> IO()
 run = run' . parse
 
+unlambda :: Char -> String -> String
+unlambda sy [] = []
+unlambda sy ('`':xs) = "``s" ++ unlambda sy xs
+unlambda sy (ot:xs) = if ot == sy
+                         then 'i':unlambda sy xs
+                         else "`k" ++ [ot] ++ unlambda sy xs
+
 main = do
     [f] <- getArgs
     p <- readFile f
